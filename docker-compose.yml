@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+
+  base-server:
+
+    build: ./
+    network_mode: 'host'
+    expose:
+      - "8092"
+    command: ./gradlew bootRun
