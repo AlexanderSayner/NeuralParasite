@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: postgres
+
+  - include:
+      file: db/changelog/db.changelog-n001-create_car.yaml
+
+  - include:
+      file: db/changelog/db.changelog-n002-create_corner.yaml
