@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: alex
+      changes:
+        - createTable:
+            schemaName: basic
+            tableName: corner
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: speed
+                  type: integer
+              - column:
+                  name: wheel_rotation_angle
+                  type: integer
+      rollback:
+        - dropTable:
+            schemaName: basic
+            tableName: car

@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: alex
+      changes:
+        - createTable:
+            schemaName: basic
+            tableName: car
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(1000)
+              - column:
+                  name: name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rim_size
+                  type: integer
+              - column:
+                  name: tire_profile
+                  type: integer
+              - column:
+                  name: weight
+                  type: integer
+              - column:
+                  name: wheel_width
+                  type: integer
+              - column:
+                  name: wheelbase
+                  type: integer
+      rollback:
+        - dropTable:
+            schemaName: basic
+            tableName: car
