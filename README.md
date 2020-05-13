@@ -7,17 +7,23 @@ http://127.0.0.1:8092/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-confi
 ```  
  
 #### Запуск с помощью docker-compose  
+*Шаг 0* - установить git, docker-compose, открыть терминал
 ##### ***Шаг 1***
 Склонировать исходники с помощью утилиты git:  
 ```shell script
 git clone https://github.com/AlexanderSayner/NeuralParasite.git
 ```
 ##### ***Шаг 2***
+Перейти в скаченную папку с проектом
+```shell script
+cd NeuralParasite
+```
+##### ***Шаг 3***
 Запустить контейнер с приложением
 ```shell script
 docker-compose build && docker-compose up
 ```
-##### ***Шаг 3***
+##### ***Шаг 4***
 Пройти в браузере по ссылке api приложения  
 Команда ctrl+C останавливает приложения
 #### Удаление контейнеров и образов
