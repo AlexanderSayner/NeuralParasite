@@ -27,10 +27,16 @@ databaseChangeLog:
                   type: integer
               - column:
                   name: tire_profile
-                  type: integer
+                  type: float4
               - column:
                   name: weight
                   type: integer
+              - column:
+                  name: front_share_of_weight
+                  type: float4
+              - column:
+                  name: rear_share_of_weight
+                  type: float4
               - column:
                   name: wheel_width
                   type: integer

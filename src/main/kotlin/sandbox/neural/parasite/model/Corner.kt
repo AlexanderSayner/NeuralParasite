@@ -8,7 +8,7 @@ import javax.persistence.*
 data class Corner(
         @JsonProperty("radius")
         @Column(name = "wheel_rotation_angle")
-        val wheelRotationAngle: Int = 0,
+        val wheelRotationAngle: Float = 0.0f,
 
         @JsonProperty("speed")
         @Column(name = "speed")

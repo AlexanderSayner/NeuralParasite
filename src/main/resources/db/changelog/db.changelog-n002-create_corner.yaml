@@ -19,7 +19,7 @@ databaseChangeLog:
                   type: integer
               - column:
                   name: wheel_rotation_angle
-                  type: integer
+                  type: float4
       rollback:
         - dropTable:
             schemaName: basic
