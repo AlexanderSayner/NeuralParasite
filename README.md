@@ -26,19 +26,6 @@ docker-compose build && docker-compose up
 ##### ***Шаг 4***
 Пройти в браузере по ссылке api приложения  
 Команда ctrl+C останавливает приложения
-#### Удаление контейнеров и образов
-Остановка всех контейнеров
-```shell script
-docker stop $(docker ps -a -q)
-```
-Удаление всех контейнеров
-```shell script
-docker rm $(docker ps -a -q)
-```
-Удаление всех образов
-```shell script
-docker rmi $(docker images -q)
-```
 #### Быстрый запуск без контейнеризации основного приложения
 Способ удобен для отладки приложения без дополнительной установки СУБД
 ##### ***Шаг 1***
@@ -52,9 +39,75 @@ docker-compose up -d database
 ./gradlew bootRun
 ```
 ##### ***Шаг 3***
-Совпадает с шагом 3 раздела "Запуск с помощью docker-compose"
-##### ***Шаг 4***
-Остановка контейнера с базой данных
+Пройти в браузере по ссылке api приложения  
+Команда ctrl+C останавливает приложения
+##### ***Шаг 4, Завершение работы***
+Остановка контейнера с базой данных. Требуется закрытие всех открытых сеансов работы
 ```shell script
 docker stop $(docker ps --filter "name=postgres_container" -q)
+```
+В случае слишком долгого выполнения команды stop, если точно не осталось ни одного открытого сеанса используйте команду kill
+```shell script
+docker container kill $(docker ps -a --filter "name=postgres_container" -q) 
+```
+##### ***Шаг 5, Возообновление работы***
+```shell script
+docker start $(docker ps -a --filter "name=postgres_container" -q)
+```
+#### Удаление контейнеров и образов
+Остановка всех контейнеров
+```shell script
+docker stop $(docker ps -a -q)
+```
+Удаление всех контейнеров
+```shell script
+docker rm $(docker ps -a -q)
+```
+Удаление всех образов
+```shell script
+docker rmi $(docker images -q)
+```
+### Начальные данные
+```http request
+POST /car
+```
+```json5
+{
+  "description": "RearDrive",
+  "weight": 1572.5,
+  "wheelbase": 2.625,
+  "frontShareOfWeight": 0.6,
+  "rearShareOfWeight": 0.4,
+  "gauge": 1.515,
+  "wheelWidth": 0.235,
+  "tireProfile": 0.45,
+  "rimSize": 17,
+  "id": 1,
+  "model": "EvaDrift"
+}
+```
+```http request
+POST /corner
+```
+```json5
+{
+  "wheelRotationAngle": 0.07,
+  "speed": 13,
+  "outerTorque": 200,
+  "innerTorque": 150,
+  "angleOfFrontHeel": 0.01,
+  "angleOfRearHeel": 0.02,
+  "id": 1
+}
+```
+```
+POST /computation
+```
+```json5
+{
+  "car_id": 1,
+  "corner_id": 1,
+  "speed_meter_per_second": "13",
+  "wheels_rotation_radians": "0.07"
+}
 ```

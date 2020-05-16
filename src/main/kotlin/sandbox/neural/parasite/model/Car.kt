@@ -14,10 +14,10 @@ data class Car( // Дата класс нам сгенерирует метод�
         val description: String = "",
 
         @Column(name = "weight")
-        val weight: Int = 0,
+        val weight: Float = 0.0f,
 
         @Column(name = "wheelbase")
-        val wheelbase: Int = 0,
+        val wheelbase: Float = 0.0f,
 
         @Column(name = "front_share_of_weight")
         val frontShareOfWeight: Float = 0.5f,
@@ -25,8 +25,11 @@ data class Car( // Дата класс нам сгенерирует метод�
         @Column(name = "rear_share_of_weight")
         val rearShareOfWeight: Float = 0.5f,
 
+        @Column(name = "gauge")
+        val gauge: Float = 0.0f,
+
         @Column(name = "wheel_width")
-        val wheelWidth: Int = 0,
+        val wheelWidth: Float = 0.0f,
 
         @Column(name = "tire_profile")
         val tireProfile: Float = 0.0f,
