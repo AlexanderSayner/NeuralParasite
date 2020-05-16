@@ -1,5 +1,7 @@
 package sandbox.neural.parasite.controller
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition
+import io.swagger.v3.oas.annotations.info.Info
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import sandbox.neural.parasite.model.Corner
@@ -7,7 +9,10 @@ import sandbox.neural.parasite.service.CornerService
 
 @RestController
 @RequestMapping("corner")
-class CornerController (private val cornerService: CornerService) {
+@OpenAPIDefinition(info = Info(
+        title = "CRUD операции для данных о поворотах")
+)
+class CornerController(private val cornerService: CornerService) {
     @GetMapping
     fun index() = cornerService.all()
 

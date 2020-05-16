@@ -1,7 +1,9 @@
 databaseChangeLog:
-  - preConditions:
-      - runningAs:
-          username: postgres
+  - changeSet:
+      id: 0
+      author: alex
+      changes:
+        - sql: CREATE SCHEMA basic
 
   - include:
       file: db/changelog/db.changelog-n001-create_car.yaml

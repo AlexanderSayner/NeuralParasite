@@ -3,9 +3,24 @@ version: "3"
 services:
 
   base-server:
-
     build: ./
-    network_mode: 'host'
+    container_name: "spring_application"
+    network_mode: "host"
+#    ports:
+#      - "8092:8080"
     expose:
       - "8092"
     command: ./gradlew bootRun
+    depends_on:
+      - database
+
+  database:
+    image: postgres
+    container_name: "postgres_container"
+    restart: always
+    environment:
+      POSTGRES_DB: neuron
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5433:5432"

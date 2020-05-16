@@ -15,11 +15,17 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: speed
+                  name: outer_torque
                   type: integer
               - column:
-                  name: wheel_rotation_angle
+                  name: inner_torque
                   type: integer
+              - column:
+                  name: angle_of_front_heel
+                  type: float4
+              - column:
+                  name: angle_of_rear_heel
+                  type: float4
       rollback:
         - dropTable:
             schemaName: basic

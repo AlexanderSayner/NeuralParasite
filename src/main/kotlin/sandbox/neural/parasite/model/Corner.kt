@@ -1,21 +1,23 @@
 package sandbox.neural.parasite.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.*
 
 @Entity
 @Table(schema = "basic", name = "corner")
 data class Corner(
-        @JsonProperty("radius")
-        @Column(name = "wheel_rotation_angle")
-        val wheelRotationAngle: Int = 0,
+        @Column(name = "outer_torque")
+        val outerTorque: Int = 0,
 
-        @JsonProperty("speed")
-        @Column(name = "speed")
-        val speed: Int = 0,
+        @Column(name = "inner_torque")
+        val innerTorque: Int = 0,
+
+        @Column(name="angle_of_front_heel")
+        val angleOfFrontHeel: Float,
+
+        @Column(name="angle_of_rear_heel")
+        val angleOfRearHeel: Float,
 
         @Id
-        @JsonProperty("id")
         @Column(name = "id")
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long = 0L

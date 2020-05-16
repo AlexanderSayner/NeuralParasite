@@ -23,20 +23,29 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: weight
+                  type: float4
+              - column:
+                  name: wheelbase
+                  type: float4
+              - column:
+                  name: gauge
+                  type: float4
+              - column:
+                  name: front_share_of_weight
+                  type: float4
+              - column:
+                  name: rear_share_of_weight
+                  type: float4
+              - column:
+                  name: wheel_width
+                  type: float4
+              - column:
                   name: rim_size
                   type: integer
               - column:
                   name: tire_profile
-                  type: integer
-              - column:
-                  name: weight
-                  type: integer
-              - column:
-                  name: wheel_width
-                  type: integer
-              - column:
-                  name: wheelbase
-                  type: integer
+                  type: float4
       rollback:
         - dropTable:
             schemaName: basic

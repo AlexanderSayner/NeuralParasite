@@ -1,4 +1,4 @@
 FROM openjdk
 
-ADD . /opt/app
+ADD ./ /opt/app
 WORKDIR /opt/app
