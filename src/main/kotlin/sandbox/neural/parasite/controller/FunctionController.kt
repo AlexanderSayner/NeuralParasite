@@ -11,7 +11,6 @@ import sandbox.neural.parasite.dto.request.*
 import sandbox.neural.parasite.dto.response.*
 import sandbox.neural.parasite.utility.FunctionService
 import java.math.BigDecimal.valueOf
-import kotlin.math.PI
 
 @RestController
 @RequestMapping("function")
@@ -19,16 +18,6 @@ import kotlin.math.PI
         title = "Белый ящик")
 )
 class FunctionController(private val functionService: FunctionService) {
-
-    @PostMapping("angle/radian")
-    fun angleInRadians(@RequestBody radianAngleDto: RadianAngleDto) =
-            GenericApiResponseDto("Угол в радианах: " +
-                    "(${radianAngleDto.numerator} * $PI) divide ${radianAngleDto.denominator}",
-                    functionService.angleInRadian(
-                            radianAngleDto.numerator.toDouble(),
-                            radianAngleDto.denominator.toDouble()
-                    )
-            )
 
     @PostMapping("turn/radius")
     fun turningRadius(@RequestBody turningRadiusAngleOfRotationOfTheWheelsDto: TurningRadiusAngleOfRotationOfTheWheelsDto) =

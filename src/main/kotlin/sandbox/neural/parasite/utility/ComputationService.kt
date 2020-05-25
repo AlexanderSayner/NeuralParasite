@@ -15,22 +15,46 @@ class ComputationService(
         private val cornerRepository: CornerRepository,
         private val functionService: FunctionService
 ) {
-    fun generalComputation(carCornerForceDto: CarCornerForceDto): RollResultDto {
-        val car = carRepository.findById(carCornerForceDto.carId).orElseThrow {
-            IllegalStateException("Нет данных об автомобиле с id=${carCornerForceDto.carId}")
+    /**
+     * Для вызова контроллером
+     */
+    fun generalComputation(carCornerForceDto: CarCornerForceDto) =
+            generalComputation(
+                    carCornerForceDto.carId,
+                    carCornerForceDto.cornerId,
+                    carCornerForceDto.wheelRotation,
+                    carCornerForceDto.speed.toDouble()
+            )
+
+    /**
+     * Встроенный поиск объектов
+     */
+    fun generalComputation(carId: Long, cornerId: Long, wheelAngle: String, speed: Double): RollResultDto {
+        val car = carRepository.findById(carId).orElseThrow {
+            IllegalStateException("Нет данных об автомобиле с id=${carId}")
         }
-        val corner = cornerRepository.findById(carCornerForceDto.cornerId).orElseThrow {
-            IllegalStateException("Нет данных о повороте с id=${carCornerForceDto.cornerId}")
+        val corner = cornerRepository.findById(cornerId).orElseThrow {
+            IllegalStateException("Нет данных о повороте с id=${cornerId}")
         }
+        return generalComputation(car, corner, wheelAngle, speed)
+    }
+
+    /**
+     * Самый примитивный вызов для использования в расчётах генетическим алгоритмом
+     */
+    fun generalComputation(car: Car, corner: Corner, wheelAngle: String, speed: Double): RollResultDto {
         // Радиус траектории движения
         val radius = functionService.turningRadiusAngleOfRotationOfTheWheels(
                 car.wheelbase.toDouble(),
-                carCornerForceDto.rotation.toDouble()
+                wheelAngle.toDouble()
         )
-        return mainCalculations(car, corner, carCornerForceDto.speed.toDouble(), radius)
+        return mainCalculations(car, corner, radius, speed)
     }
 
-    private fun mainCalculations(car: Car, corner: Corner, speed: Double, radius: Double): RollResultDto {
+    /**
+     * Операции вычисления физических величин
+     */
+    private fun mainCalculations(car: Car, corner: Corner, radius: Double, speed: Double): RollResultDto {
         // Масса на передней оси
         val m1 = functionService.axleMass(car.frontShareOfWeight.toDouble(), car.weight.toDouble())
         // Масса за задней оси
