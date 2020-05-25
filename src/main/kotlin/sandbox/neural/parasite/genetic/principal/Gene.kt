@@ -1,9 +1,9 @@
 package sandbox.neural.parasite.genetic.principal
 
-import sandbox.neural.parasite.auxiliary.Maths
+import sandbox.neural.parasite.auxiliary.getDecimalNumber
 import kotlin.math.abs
 
-class Gene(value: Int) {
+open class Gene(value: Int) {
     private val length = 6
 
     // Работаю с двоичными числами - так интереснее
@@ -23,15 +23,15 @@ class Gene(value: Int) {
 
     // Коэффициент пригодности
     @ExperimentalStdlibApi
-    fun getFitness(welcomeAnswer: Float): Float {
-        return abs(welcomeAnswer - Maths.getDecimalNumber(
+    open fun getFitness(welcomeAnswer: Float): Float {
+        return abs(welcomeAnswer - getDecimalNumber(
                 alleles
         ))
     }
 
     @ExperimentalStdlibApi
     val value:Int get() {
-        return Maths.getDecimalNumber(alleles)
+        return getDecimalNumber(alleles)
     }
 
     /**

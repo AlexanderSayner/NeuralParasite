@@ -2,35 +2,42 @@ package sandbox.neural.parasite.genetic
 
 import org.slf4j.LoggerFactory
 import sandbox.neural.parasite.auxiliary.getDecimalNumber
+import sandbox.neural.parasite.genetic.principal.CarGene
 import sandbox.neural.parasite.genetic.principal.Gene
+import sandbox.neural.parasite.model.Car
+import sandbox.neural.parasite.model.Corner
+import sandbox.neural.parasite.utility.ComputationService
 import kotlin.math.abs
 
 @ExperimentalStdlibApi
-class GeneticAlgorithm(_answer: Float, _iterationsNumber: Int, _populationNumber: Int) {
-    private val logger = LoggerFactory.getLogger("GeneticAlgorithmLog")
+class CarGeneticAlgorithm(_answer: Float,
+                          _iterationsNumber: Int,
+                          _populationNumber: Int,
+                          private val computationService: ComputationService,
+                          private val car: Car,
+                          private val corner: Corner,
+                          private val personRotation: String) {
+    private val logger = LoggerFactory.getLogger("CarGeneticAlgorithmLog")
     private val populationNumber = _populationNumber
     private val iterationsNumber = _iterationsNumber
     private val limit = 63
     private val answer = _answer
-    private var population = mutableListOf<Gene>()
+    private var population = mutableListOf<CarGene>()
 
     init {
-        logger.warn("GeneticAlgorithm init has called")
+        logger.debug("CarGeneticAlgorithm init has called")
         if (populationNumber.compareTo(1) < 1) throw IllegalStateException("Нужно хотя бы немного больше, чем $populationNumber  особей в одной популяции")
         logger.info("Стартовая популяция из $populationNumber особей:")
         (1..populationNumber).forEach {
-            val rands = (1..limit).random()
-            val initGen = if (rands.toFloat() == answer)
-                Gene(rands + (0 until answer.toInt()).random())
-            else
-                Gene(rands)
+            val rands = (0..limit).random()
+            val initGen = CarGene(rands, computationService, car, corner, personRotation)
             logger.info("$it. ${initGen.value} to binary ${initGen.alleles}")
             population.add(initGen)
         }
     }
 
     fun solve(): Int {
-        val bestOfTheBest = mutableListOf<Gene>()
+        val bestOfTheBest = mutableListOf<CarGene>()
         likelihoodInitialisation(population, answer)
         bestOfTheBest.add(population.minBy { gene -> gene.getFitness(answer) }!!)
         (0..iterationsNumber).forEach { i ->
@@ -88,7 +95,7 @@ class GeneticAlgorithm(_answer: Float, _iterationsNumber: Int, _populationNumber
      * Хромосома делится на две части в случайном месте
      * Затем случайным образом выбирается какая из частей уйдёт потомкам
      */
-    fun breed(parentOne: Gene, parentTwo: Gene): Gene {
+    fun breed(parentOne: CarGene, parentTwo: CarGene): CarGene {
         val size = parentOne.alleles.length
         val crossover = (1 until size).random()
         val headsOrTails = (0..1).random()
@@ -100,17 +107,17 @@ class GeneticAlgorithm(_answer: Float, _iterationsNumber: Int, _populationNumber
                 "\n Parent Two: ${parentTwo.alleles.substring(IntRange(0, crossover - 1))}|${parentTwo.alleles.substring(IntRange(crossover, size - 1))}" +
                 "\n Left (0) Or Right (1): $headsOrTails" +
                 "\n Child: $child")
-        return Gene(getDecimalNumber(child))
+        return CarGene(getDecimalNumber(child), computationService, car, corner, personRotation)
     }
 
-    private fun breed(pair: Pair<Gene, Gene>) = breed(pair.first, pair.second)
+    private fun breed(pair: Pair<CarGene, CarGene>) = breed(pair.first, pair.second)
 
     /**
      * Задаёт случайное значение и по параметру likelihood выбирает родителей для нового поколения
      */
-    private fun getNewGeneration(geneList: List<Gene>): List<Gene> {
+    private fun getNewGeneration(geneList: List<CarGene>): List<CarGene> {
         if (geneList.size < 2) throw IllegalStateException("Надо бы побольше особей, чем ${geneList.size}")
-        val parents = mutableListOf<Pair<Gene, Gene>>()
+        val parents = mutableListOf<Pair<CarGene, CarGene>>()
 //        var last = 0.0f // Чтобы хоть немного повысить случайность пар
         geneList.forEach { _ ->// Здесь я хочу, чтобы в будущем поколении было столько же особей, сколько дано
 
@@ -129,43 +136,9 @@ class GeneticAlgorithm(_answer: Float, _iterationsNumber: Int, _populationNumber
                 }
             }
             parents.add(Pair(parentOne, parentTwo))
-
-            // TODO: подумать что сделать с другими способами отбора
-            /*
-            var rand1=0
-            var rand2=0
-            while (rand1==rand2){
-                rand1=(geneList.indices).random()
-                rand2=(geneList.indices).random()
-            }
-            val parentOne = geneList[rand1]
-            val parentTwo = geneList[rand2]
-
-
-             */
-
-            /*
-            val index = (0 until population.size).random()
-            val parentOne = population[index]
-            var parentTwo = geneList.findLast { gene ->
-                gene.likelihood > parentOne.likelihood && gene.likelihood != last
-            }
-            if (parentTwo == null || parentTwo == parentOne) {
-                val lastIndex = population.size - 1
-                val spare = when (index) {
-                    lastIndex -> (0 until lastIndex).random()
-                    0 -> (1 until population.size).random()
-                    else -> (0 until index).random()
-                }
-                parentTwo = population.sortedByDescending { it.likelihood }[spare]
-            }
-            last = parentTwo.likelihood
-parents.add(Pair(parentOne, parentTwo))
-             */
-
         }
 
-        return parents.map { partners: Pair<Gene, Gene> ->
+        return parents.map { partners: Pair<CarGene, CarGene> ->
             breed(partners)
         }
     }
@@ -178,7 +151,7 @@ parents.add(Pair(parentOne, parentTwo))
 //        return Gene(Maths.getDecimalNumber(mutant))
 //    }
 
-    private fun comparePopulations(pop1: List<Gene>, other: List<Gene>): Int {
+    private fun comparePopulations(pop1: List<CarGene>, other: List<CarGene>): Int {
         var sum = 0.0f
         pop1.forEach {
             sum += it.likelihood

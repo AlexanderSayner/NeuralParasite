@@ -94,7 +94,7 @@ POST /corner
   "wheelRotationAngle": 0.07,
   "speed": 13,
   "outerTorque": 200,
-  "innerTorque": 150,
+  "innerTorque": 100,
   "angleOfFrontHeel": 0.01,
   "angleOfRearHeel": 0.02,
   "id": 1

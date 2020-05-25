@@ -1,25 +1,15 @@
 package sandbox.neural.parasite.controller
 
-import io.swagger.v3.oas.annotations.ExternalDocumentation
-import io.swagger.v3.oas.annotations.OpenAPIDefinition
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.web.bind.annotation.*
 import sandbox.neural.parasite.genetic.GeneticAlgorithm
 import sandbox.neural.parasite.genetic.principal.Gene
 
 @RestController
-@RequestMapping("neural/genetic")
-@OpenAPIDefinition
+@RequestMapping("genetic")
 class GeneticController {
 
     @ExperimentalStdlibApi
     @GetMapping
-    @ApiResponse(description = "что-то")
-    @Operation(description = "что-то там")
-    @ExternalDocumentation(description = "супер-дупер")
-    @Parameter(description = "awesome")
     fun index(@RequestParam iterations: Int, population: Int): String {
         val geneticAlgorithm = GeneticAlgorithm(15.0f, iterations, population)
         return "${geneticAlgorithm.solve()}"
