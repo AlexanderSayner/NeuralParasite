@@ -2,10 +2,7 @@ package sandbox.neural.parasite.utility
 
 import org.springframework.stereotype.Service
 import sandbox.neural.parasite.auxiliary.Constant
-import kotlin.math.PI
-import kotlin.math.pow
-import kotlin.math.sqrt
-import kotlin.math.tan
+import kotlin.math.*
 
 @Service
 class FunctionService {
@@ -117,7 +114,7 @@ class FunctionService {
      * Учитываются реакции только на передние колёса
      */
     fun sideEffectFrontMax(outerWheelReaction: Double, innerWheelReaction: Double, reactionCoefficient: Double) =
-            (outerWheelReaction + innerWheelReaction) * sqrt(Constant.Fi.value.pow(2) - reactionCoefficient.pow(2))
+            (outerWheelReaction + innerWheelReaction) * sqrt(abs(Constant.Fi.value.pow(2) - reactionCoefficient.pow(2)))
 
     /**
      * Максимальное боковое воздействие, которое способен выдержать автомобиль перед заносом
@@ -126,8 +123,8 @@ class FunctionService {
      * Учитываются реакции только на задние колёса
      */
     fun sideEffectRearMax(outerWheelReaction: Double, innerWheelReaction: Double, outerTangentReaction: Double, innerTangentReaction: Double) =
-            sqrt(outerWheelReaction.pow(2) * Constant.Fi.value.pow(2) - outerTangentReaction.pow(2)) +
-                    sqrt(innerWheelReaction.pow(2) * Constant.Fi.value.pow(2) - innerTangentReaction.pow(2))
+            sqrt(abs(outerWheelReaction.pow(2) * Constant.Fi.value.pow(2) - outerTangentReaction.pow(2))) +
+                    sqrt(abs(innerWheelReaction.pow(2) * Constant.Fi.value.pow(2) - innerTangentReaction.pow(2)))
 
     /**
      * Поворачивающий момент
