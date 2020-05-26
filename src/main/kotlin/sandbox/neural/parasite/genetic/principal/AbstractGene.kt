@@ -1,14 +1,15 @@
 package sandbox.neural.parasite.genetic.principal
 
 import sandbox.neural.parasite.auxiliary.getDecimalNumber
-import kotlin.math.abs
 
-open class Gene(value: Int) {
-    private val length = 6
-
+/**
+ * @param value - непосредственно значение "клетки", которое будет "скрещиваться" с другими
+ */
+@ExperimentalStdlibApi
+abstract class AbstractGene(value: Int,
+                            private val length: Int = 6) {
     // Работаю с двоичными числами - так интереснее
     private val charAlleles: CharArray = value.toString(2).toCharArray()
-    @ExperimentalStdlibApi
     val alleles: String
         get() {
             var strAlleles = charAlleles.concatToString()
@@ -21,18 +22,14 @@ open class Gene(value: Int) {
     // % приспособленности гена
     var likelihood = 0.0f
 
-    // Коэффициент пригодности
-    @ExperimentalStdlibApi
-    open fun getFitness(welcomeAnswer: Float): Float {
-        return abs(welcomeAnswer - getDecimalNumber(
-                alleles
-        ))
-    }
+    // Численный показатель приспособленности гена
+    abstract fun getFitness(fitnessCriteria: Float): Float
 
-    @ExperimentalStdlibApi
-    val value:Int get() {
-        return getDecimalNumber(alleles)
-    }
+    // Значение гена в десятичной форме
+    val value: Int
+        get() {
+            return getDecimalNumber(alleles)
+        }
 
     /**
      * Indicates whether some other object is "equal to" this one. Implementations must fulfil the following
@@ -48,7 +45,7 @@ open class Gene(value: Int) {
      */
     @ExperimentalStdlibApi
     override fun equals(other: Any?): Boolean {
-        if (other == null || other !is Gene) return false
+        if (other == null || other !is PrimitiveGene) return false
         var counter = 0
         alleles.forEach { c ->
             if (other.alleles[counter++] != c)
