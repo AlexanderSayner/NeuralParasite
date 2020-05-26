@@ -28,7 +28,6 @@ hs_err_pid*
 # gradle cash files
 .gradle
 gradle
-gradlew
 
 # Logs
 logs

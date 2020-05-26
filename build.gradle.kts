@@ -60,5 +60,5 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.wrapper<Wrapper> {
-    gradleVersion = "6.3"
+    gradleVersion = "6.4.1"
 }
