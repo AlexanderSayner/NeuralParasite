@@ -12,7 +12,7 @@ abstract class AbstractGeneticAlgorithm(
         protected var population: MutableList<AbstractGene>) {
     private val logger = getLogger("GeneticAlgorithmLog")
 
-    abstract fun initializeNewGene(value:Int):AbstractGene
+    abstract fun initializeNewGene(value: Int): AbstractGene
 
     fun solve(): Int {
         val bestOfTheBest = mutableListOf<AbstractGene>()
@@ -85,7 +85,8 @@ abstract class AbstractGeneticAlgorithm(
                 "\n Parent Two: ${parentTwo.alleles.substring(IntRange(0, crossover - 1))}|${parentTwo.alleles.substring(IntRange(crossover, size - 1))}" +
                 "\n Left (0) Or Right (1): $headsOrTails" +
                 "\n Child: $child")
-        return initializeNewGene(getDecimalNumber(child))
+        val possibleMutant = mutation(child)
+        return initializeNewGene(getDecimalNumber(possibleMutant))
     }
 
     private fun breed(pair: Pair<AbstractGene, AbstractGene>) = breed(pair.first, pair.second)
@@ -155,14 +156,6 @@ parents.add(Pair(parentOne, parentTwo))
         }
     }
 
-//    private fun mutation(was: Gene): Gene {
-//        var mutant = ""
-//        (1..6).forEach { _ ->
-//            mutant = mutant.plus((0..1).random())
-//        }
-//        return Gene(Maths.getDecimalNumber(mutant))
-//    }
-
     private fun comparePopulations(pop1: List<AbstractGene>, other: List<AbstractGene>): Int {
         var sum = 0.0f
         pop1.forEach {
@@ -179,5 +172,15 @@ parents.add(Pair(parentOne, parentTwo))
             likelihood1 == likelihood2 -> 0
             else -> -1
         }
+    }
+
+
+    /**
+     * Одноточечная мутация
+     */
+    fun mutation(was: String): String {
+        val random = (was.indices).random()
+        val char = if (was[random] == '0' || (0..99).random() > 50) '1' else '0'
+        return was.substring(0, random) + char + was.substring(random + 1)
     }
 }

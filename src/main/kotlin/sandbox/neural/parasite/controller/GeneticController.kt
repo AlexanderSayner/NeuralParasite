@@ -1,6 +1,7 @@
 package sandbox.neural.parasite.controller
 
 import org.springframework.web.bind.annotation.*
+import sandbox.neural.parasite.auxiliary.getDecimalNumber
 import sandbox.neural.parasite.genetic.PrimitiveGeneticAlgorithm
 import sandbox.neural.parasite.genetic.principal.PrimitiveGene
 
@@ -13,6 +14,13 @@ class GeneticController {
     fun index(@RequestParam iterations: Int, population: Int): String {
         val geneticAlgorithm = PrimitiveGeneticAlgorithm(15.0f, iterations, population)
         return "${geneticAlgorithm.solve()}"
+    }
+
+    @ExperimentalStdlibApi
+    @PostMapping("/test/mutation")
+    fun mutant(@RequestParam number: Int): String {
+        val geneticAlgorithm = PrimitiveGeneticAlgorithm(15.0f, 50, 30)
+        return getDecimalNumber(geneticAlgorithm.mutation(PrimitiveGene(number).alleles)).toString()
     }
 
     @ExperimentalStdlibApi
